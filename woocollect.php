@@ -82,8 +82,47 @@ function add_custom_admin_menu() {
 function display_main_menu_content() {
     // Display content for the main menu page here
     echo '<div class="wrap">';
-    echo '<h1>Main Menu Page Content</h1>';
+    echo '<h1>Pro Click & Collect for WooCommerce</h1>';
     echo '</div>';
+    
+    echo '<h2>Booking Window Settings</h2>';
+    echo '<ul>';
+    echo '<li>The Booking Window setting allows you to configure the minimum number of hours required for advanced booking. This ensures that customers cannot select collection times that are too close to the current time.</li>';
+    echo '<li>Follow these steps to adjust the value:</li>';
+    echo '<ol>';
+    echo '<li>On the main menu page, click on the "Booking Window" option.</li>';
+    echo '<li>You will see a form with a single field labeled "Minimum Hours in Advance".</li>';
+    echo '<li>Enter the desired minimum number of hours in the input field. This value represents the minimum time required for customers to book a collection in advance.</li>';
+    echo '<li>Click the "Save Changes" button to save your settings.</li>';
+    echo '</ol>';
+    echo '</ul>';
+    
+    echo '<h2>Collection Time Settings</h2>';
+    echo '<ul>';
+    echo '<li>The Collection Time Settings allow you to define the opening and closing times for collection on each day of the week. This ensures accurate scheduling of collection times based on your business\'s availability.</li>';
+    echo '<li>Follow these steps to set the opening and closing times:</li>';
+    echo '<ol>';
+    echo '<li>On the main menu page, click on the "Collection Time Settings" option.</li>';
+    echo '<li>You will see a form with a table displaying the days of the week and corresponding input fields for start and end times.</li>';
+    echo '<li>For each day of the week, enter the opening and closing times in the respective input fields. This defines the available collection times for each day.</li>';
+    echo '<li>After entering the times for all the days, click the "Save Changes" button to save your settings.</li>';
+    echo '</ol>';
+    echo '</ul>';
+    
+    echo '<h2>Shipping Methods Settings</h2>';
+    echo '<ul>';
+    echo '<li>The Shipping Methods Settings allow you to select the shipping methods that support click and collect. This ensures that only relevant shipping methods are available for customers to choose from during the checkout process.</li>';
+    echo '<li>Follow these steps to select the supported shipping methods:</li>';
+    echo '<ol>';
+    echo '<li>On the main menu page, click on the "Shipping Methods Settings" option.</li>';
+    echo '<li>You will see a form with a list of available shipping methods.</li>';
+    echo '<li>Review the shipping methods and select the ones that are relevant to your business and support click and collect. To select a shipping method, check the corresponding checkbox.</li>';
+    echo '<li>Once you have selected the desired shipping methods, click the "Save Changes" button to save your settings.</li>';
+    echo '</ol>';
+    echo '</ul>';
+    
+    echo '<p>By following these instructions, you will be able to configure the plugin\'s settings for the Booking Window, Collection Time, and Shipping Methods. These settings will customize the functionality of the click and collect feature according to your business requirements.</p>';
+    
 }
 
 // Booking Window admin settings page
