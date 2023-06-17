@@ -1,6 +1,6 @@
 # Pro Click and Collect for WooCommerce
 
-The **Pro Click and Collect for WooCommerce** plugin is an enhanced version of the *Simple Click & Collect for WooCommerce* plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
+The **Pro Click and Collect for WooCommerce** plugin is an enhanced version of the [*Simple Click & Collect for WooCommerce*](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
 
 ## Table of Contents
 
@@ -22,13 +22,13 @@ The **Pro Click and Collect for WooCommerce** plugin is an enhanced version of t
 
 ## Plugin Description
 
-The Pro Click and Collect for WooCommerce plugin expands on the features of the *Simple Click & Collect for WooCommerce* plugin to provide advanced functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
+The Pro Click and Collect for WooCommerce plugin expands on the features of the [*Simple Click & Collect for WooCommerce*](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin to provide advanced functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
 
 ## Installation
 
 To install the Pro Click and Collect for WooCommerce plugin, follow these steps:
 
-1. Download the plugin zip file from the [GitHub repository](https://github.com/[repository-link]).
+1. Download the plugin zip file from the [GitHub repository](https://github.com/kandekore/Pro-Click-And-Collect-for-WooCommerce).
 2. Log in to your WordPress admin dashboard.
 3. Navigate to "Plugins" > "Add New".
 4. Click the "Upload Plugin" button and choose the downloaded zip file.
@@ -59,7 +59,7 @@ The Pro Click and Collect plugin allows you to select specific shipping methods 
 
 ## Complementary Plugin: Simple Click & Collect Branches
 
-The Pro Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"](https://github.com/[branches-repository-link]) plugin. When used together, these plugins provide an all-in-one solution for managing click and collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
+The Pro Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"][https://github.com/[branches-repository-link](https://github.com/kandekore/Simple-Click-and-Collect-Branches-for-WooCommerce) plugin. When used together, these plugins provide an all-in-one solution for managing click and collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
 
 ## Usage
 
@@ -81,8 +81,9 @@ The plugin provides various hooks and actions that developers can utilize for cu
 
 ## Support
 
-For any inquiries or support requests, please contact [support@example.com](mailto:support@example.com).
+For any inquiries or support requests, please contact [darren@kandekore.net](mailto:darren@kandekore.net).
 
-## License
+## Changelog
 
-This plugin is released under the GPLv2 or later license. See the [LICENSE](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) file for more details.
+### Version 1.0
+- Initial release
