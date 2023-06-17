@@ -480,7 +480,6 @@ function collection_time_booking_display_order_received_collection_datetime($ord
         echo '</div>';
     }
 }
-
 // Add custom dashboard widget
 add_action('wp_dashboard_setup', 'collection_time_booking_add_dashboard_widget');
 
@@ -619,9 +618,3 @@ function remove_field_validation_on_shipping_change( $posted_data ) {
     return $posted_data;
 }
 add_filter( 'woocommerce_checkout_posted_data', 'remove_field_validation_on_shipping_change',10,2);
-
-
-
-
-
-
