@@ -1,13 +1,11 @@
 <?php 
 /*
-Plugin Name: Pro Click & Collect for WooCommerce
+Plugin Name: Click & Collect for WooCommerce
 Description: Collection time plugin for WooCommerce orders
-Version: 1.0
-Author: Darren Kandekore
-Author URI: https://darrenk.uk
+Version: 1.1.1
+Author: D Kandekore
 License: GPL v2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Update URI:        https://wordpresswizard.net/clickandcollect
 */
 
 // Plugin Activation and Deactivation
@@ -586,4 +584,9 @@ function remove_field_validation_on_shipping_change( $posted_data ) {
     return $posted_data;
 }
 add_filter( 'woocommerce_checkout_posted_data', 'remove_field_validation_on_shipping_change',10,2);
+
+function enqueue_plugin_styles() {
+    wp_enqueue_style( 'plugin-styles', plugin_dir_url( __FILE__ ) . 'plugin-styles.css' );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_plugin_styles' );
 
