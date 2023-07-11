@@ -1,6 +1,6 @@
 <?php function enqueue_my_script() {
     $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
-    wp_enqueue_script('collection-time-booking-script', get_template_directory_uri() . '/js/collection-time-booking.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('collection-time-booking-script', site_url() . '/wp-content/plugins/WooCollect/js/collection-time-booking.js', array('jquery'), '1.0.0', true);
     wp_enqueue_script('my-shipping-methods-script', site_url() . '/wp-content/plugins/WooCollect/js/shipping-methods.js', array('jquery', 'collection-time-booking-script'), '1.1.1', true);
     wp_localize_script('collection-time-booking-script', 'my_script_vars', array(
         'selected_shipping_methods' => implode(" , ",$selected_shipping_methods),
