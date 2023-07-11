@@ -1,4 +1,4 @@
-=== Pro Click and Collect for WooCommerce ===
+=== Click and Collect for WooCommerce ===
 
 Contributors: Darren Kandekore
 Tags: woocommerce, click and collect, collection, pickup
@@ -10,13 +10,13 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-The Pro Click and Collect for WooCommerce plugin is an enhanced version of the Simple Click & Collect for WooCommerce plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
+The Click and Collect for WooCommerce plugin is an enhanced version of the Simple Click & Collect for WooCommerce plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
 
 == Installation ==
 
-To install the Pro Click and Collect for WooCommerce plugin, follow these steps:
+To install the Click and Collect for WooCommerce plugin, follow these steps:
 
-1. Download the plugin zip file from the GitHub repository: [https://github.com/kandekore/Pro-Click-And-Collect-for-WooCommerce](https://github.com/kandekore/Pro-Click-And-Collect-for-WooCommerce).
+1. Download the plugin zip file from the GitHub repository: [https://github.com/kandekore/Click-And-Collect-for-WooCommerce](https://github.com/kandekore/Click-And-Collect-for-WooCommerce).
 2. Log in to your WordPress admin dashboard.
 3. Navigate to "Plugins" > "Add New".
 4. Click the "Upload Plugin" button and choose the downloaded zip file.
@@ -31,7 +31,7 @@ To install the Pro Click and Collect for WooCommerce plugin, follow these steps:
 
 == Usage ==
 
-After installing and activating the Pro Click and Collect for WooCommerce plugin, customers will have the option to select their preferred collection date and time during the checkout process. The available time slots will be based on the settings defined in the admin panel.
+After installing and activating the Click and Collect for WooCommerce plugin, customers will have the option to select their preferred collection date and time during the checkout process. The available time slots will be based on the settings defined in the admin panel.
 
 == Support ==
 
@@ -39,9 +39,7 @@ For any inquiries or support requests, please contact [darren@kandekore.net](mai
 
 == License ==
 
-The Pro Click and Collect for WooCommerce plugin is licensed under the GNU General Public License v2 or later. See [LICENSE](LICENSE) file for details.
+The Click and Collect for WooCommerce plugin is licensed under the GNU General Public License v2 or later. See [LICENSE](LICENSE) file for details.
 
-== Changelog ==
 
-= Version 1.0 =
-- Initial release
+

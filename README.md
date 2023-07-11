@@ -1,6 +1,6 @@
-# Pro Click and Collect for WooCommerce
+# Click and Collect for WooCommerce
 
-The **Pro Click and Collect for WooCommerce** plugin is an enhanced version of the [*Simple Click & Collect for WooCommerce*](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
+The **Click and Collect for WooCommerce** plugin is an enhanced version of the [_Simple Click & Collect for WooCommerce_](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin, offering advanced features and increased functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
 
 ## Table of Contents
 
@@ -22,13 +22,13 @@ The **Pro Click and Collect for WooCommerce** plugin is an enhanced version of t
 
 ## Plugin Description
 
-The Pro Click and Collect for WooCommerce plugin expands on the features of the [*Simple Click & Collect for WooCommerce*](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin to provide advanced functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
+The Click and Collect for WooCommerce plugin expands on the features of the [_Simple Click & Collect for WooCommerce_](https://github.com/kandekore/simple-click-and-collect-for-woocommerce) plugin to provide advanced functionality for managing click and collect orders in WooCommerce. This plugin provides a seamless solution for enabling customers to select collection dates and times during the checkout process, improving the overall customer experience.
 
 ## Installation
 
-To install the Pro Click and Collect for WooCommerce plugin, follow these steps:
+To install the Click and Collect for WooCommerce plugin, follow these steps:
 
-1. Download the plugin zip file from the [GitHub repository](https://github.com/kandekore/Pro-Click-And-Collect-for-WooCommerce).
+1. Download the plugin zip file from the [GitHub repository](https://github.com/kandekore/Click-And-Collect-for-WooCommerce).
 2. Log in to your WordPress admin dashboard.
 3. Navigate to "Plugins" > "Add New".
 4. Click the "Upload Plugin" button and choose the downloaded zip file.
@@ -39,7 +39,7 @@ To install the Pro Click and Collect for WooCommerce plugin, follow these steps:
 
 ### Admin Settings
 
-The Pro Click and Collect plugin introduces an admin settings page where you can configure various options related to click and collect functionality. The settings include:
+The Click and Collect plugin introduces an admin settings page where you can configure various options related to click and collect functionality. The settings include:
 
 - **Booking Window**: Set the minimum number of hours required for advanced booking.
 - **Collection Time Settings**: Configure the opening and closing times for collection on each day of the week.
@@ -55,17 +55,17 @@ Admins can define the opening and closing times for collection on each day of th
 
 ### Shipping Methods Settings
 
-The Pro Click and Collect plugin allows you to select specific shipping methods that support click and collect. You can customize the available shipping methods to provide a seamless click and collect experience.
+The Click and Collect plugin allows you to select specific shipping methods that support click and collect. You can customize the available shipping methods to provide a seamless click and collect experience.
 
 ## Complementary Plugin: Simple Click & Collect Branches
 
-The Pro Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"][https://github.com/[branches-repository-link](https://github.com/kandekore/Simple-Click-and-Collect-Branches-for-WooCommerce) plugin. When used together, these plugins provide an all-in-one solution for managing click and collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
+The Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"]https://github.com/[branches-repository-link](https://github.com/kandekore/Simple-Click-and-Collect-Branches-for-WooCommerce) plugin. When used together, these plugins provide an all-in-one solution for managing click and collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
 
 ## Usage
 
 ### Selecting Collection Date and Time
 
-After installing and activating the Pro Click and Collect for WooCommerce plugin, customers will have the option to select their preferred collection date and time during the checkout process. The available time slots will be based on the settings defined in the admin panel.
+After installing and activating the Click and Collect for WooCommerce plugin, customers will have the option to select their preferred collection date and time during the checkout process. The available time slots will be based on the settings defined in the admin panel.
 
 ### Order Validation
 
@@ -73,7 +73,7 @@ The plugin includes validation to ensure that customers select a valid collectio
 
 ## Admin Dashboard Widget: Future Collection Orders
 
-The Pro Click and Collect for WooCommerce plugin adds a custom dashboard widget called "Future Collection Orders." This widget displays upcoming collection orders based on the defined collection date and time. Admins can easily keep track of upcoming orders and ensure smooth order fulfillment.
+The Click and Collect for WooCommerce plugin adds a custom dashboard widget called "Future Collection Orders." This widget displays upcoming collection orders based on the defined collection date and time. Admins can easily keep track of upcoming orders and ensure smooth order fulfillment.
 
 ## Hooks and Actions
 
@@ -82,8 +82,3 @@ The plugin provides various hooks and actions that developers can utilize for cu
 ## Support
 
 For any inquiries or support requests, please contact [darren@kandekore.net](mailto:darren@kandekore.net).
-
-## Changelog
-
-### Version 1.0
-- Initial release
