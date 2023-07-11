@@ -28,6 +28,7 @@ To install the Click and Collect for WooCommerce plugin, follow these steps:
 - **Booking Window**: Set the minimum number of hours required for advanced booking.
 - **Collection Time Settings**: Configure the opening and closing times for collection on each day of the week.
 - **Shipping Methods Settings**: Select the shipping methods that support click and collect.
+- **Future Collections Widget** : Stay on top of your game with our custom dashboard widget. 
 
 == Usage ==
 
