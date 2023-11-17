@@ -122,7 +122,7 @@ function display_booking_window() {
     </div>
     <?php
 }
-
+}
 
 // Admin settings page
 function display_collection_time_settings()
