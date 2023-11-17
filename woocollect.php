@@ -2,11 +2,13 @@
 /*
 Plugin Name: Click & Collect for WooCommerce
 Description: Collection time plugin for WooCommerce orders
-Version: 1.1.1
+Version: 1.0.1
 Author: D Kandekore
 License: GPL v2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 */
+
+if ( ! defined( 'ABSPATH' ) ) exit;    
 
 // Plugin Activation and Deactivation
 
@@ -66,61 +68,15 @@ function add_custom_admin_menu() {
         'collection-time-settings', 
         'display_collection_time_settings'
     );
-     add_submenu_page(
-        'woo-click-collect', 
-        'Shipping Methods', 
-        'Shipping Methods', 
-        'manage_options', 
-        'shipping-methods-settings', 
-        'display_shipping_methods_settings'
-    );
+
 }
 
 // Main menu page content
 function display_main_menu_content() {
     // Display content for the main menu page here
-    echo '<div class="wrap">';
+  
     echo '<h1>Pro Click & Collect for WooCommerce</h1>';
-    echo '</div>';
-    
-    echo '<h2>Booking Window Settings</h2>';
-    echo '<ul>';
-    echo '<li>The Booking Window setting allows you to configure the minimum number of hours required for advanced booking. This ensures that customers cannot select collection times that are too close to the current time.</li>';
-    echo '<li>Follow these steps to adjust the value:</li>';
-    echo '<ol>';
-    echo '<li>On the main menu page, click on the "Booking Window" option.</li>';
-    echo '<li>You will see a form with a single field labeled "Minimum Hours in Advance".</li>';
-    echo '<li>Enter the desired minimum number of hours in the input field. This value represents the minimum time required for customers to book a collection in advance.</li>';
-    echo '<li>Click the "Save Changes" button to save your settings.</li>';
-    echo '</ol>';
-    echo '</ul>';
-    
-    echo '<h2>Collection Time Settings</h2>';
-    echo '<ul>';
-    echo '<li>The Collection Time Settings allow you to define the opening and closing times for collection on each day of the week. This ensures accurate scheduling of collection times based on your business\'s availability.</li>';
-    echo '<li>Follow these steps to set the opening and closing times:</li>';
-    echo '<ol>';
-    echo '<li>On the main menu page, click on the "Collection Time Settings" option.</li>';
-    echo '<li>You will see a form with a table displaying the days of the week and corresponding input fields for start and end times.</li>';
-    echo '<li>For each day of the week, enter the opening and closing times in the respective input fields. This defines the available collection times for each day.</li>';
-    echo '<li>After entering the times for all the days, click the "Save Changes" button to save your settings.</li>';
-    echo '</ol>';
-    echo '</ul>';
-    
-    echo '<h2>Shipping Methods Settings</h2>';
-    echo '<ul>';
-    echo '<li>The Shipping Methods Settings allow you to select the shipping methods that support click and collect. This ensures that only relevant shipping methods are available for customers to choose from during the checkout process.</li>';
-    echo '<li>Follow these steps to select the supported shipping methods:</li>';
-    echo '<ol>';
-    echo '<li>On the main menu page, click on the "Shipping Methods Settings" option.</li>';
-    echo '<li>You will see a form with a list of available shipping methods.</li>';
-    echo '<li>Review the shipping methods and select the ones that are relevant to your business and support click and collect. To select a shipping method, check the corresponding checkbox.</li>';
-    echo '<li>Once you have selected the desired shipping methods, click the "Save Changes" button to save your settings.</li>';
-    echo '</ol>';
-    echo '</ul>';
-    
-    echo '<p>By following these instructions, you will be able to configure the plugin\'s settings for the Booking Window, Collection Time, and Shipping Methods. These settings will customize the functionality of the click and collect feature according to your business requirements.</p>';
-    
+   
 }
 
 // Booking Window admin settings page
@@ -129,6 +85,12 @@ function display_booking_window() {
     if (!current_user_can('manage_options')) {
         return;
     }
+        // Check if form is submitted and nonce is set
+        if (isset($_POST['booking_window_hours']) && isset($_POST['booking_window_nonce'])) {
+            // Verifying the nonce
+            if (!wp_verify_nonce($_POST['booking_window_nonce'], 'booking_window_settings')) {
+                die('Invalid nonce.');
+            }
     
     // Update 'booking_window_hours' if form submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -140,6 +102,7 @@ function display_booking_window() {
     <div class="wrap">
         <h1><?= esc_html(get_admin_page_title()); ?></h1>
         <form action="options.php" method="post">
+        <?php wp_nonce_field('booking_window_settings', 'booking_window_nonce'); ?>
             <?php
             settings_fields('booking_window_settings');
             do_settings_sections('booking_window_settings');
@@ -164,30 +127,41 @@ function display_booking_window() {
 // Admin settings page
 function display_collection_time_settings()
 {
-    // Save settings if form submitted
-    if (isset($_POST['collection_time_booking_submit'])) {
+    if (!current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions to access this page.'));
+    }
+
+    // Check if form is submitted and nonce is set
+    if (isset($_POST['collection_time_booking_submit']) && isset($_POST['collection_time_booking_nonce'])) {
+        // Verifying the nonce
+        if (!wp_verify_nonce($_POST['collection_time_booking_nonce'], 'collection_time_booking_settings')) {
+            die('Invalid nonce.');
+        }
+
         $opening_hours = array();
-        
+
         // Loop through days of the week
         foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day) {
-            $opening_hours[$day] = array(
-                'start_time' => sanitize_text_field($_POST[$day . '_start_time']),
-                'end_time'   => sanitize_text_field($_POST[$day . '_end_time'])
-            );
+            if (isset($_POST[$day . '_start_time']) && isset($_POST[$day . '_end_time'])) {
+                $opening_hours[$day] = array(
+                    'start_time' => sanitize_text_field($_POST[$day . '_start_time']),
+                    'end_time'   => sanitize_text_field($_POST[$day . '_end_time'])
+                );
+            }
         }
 
         // Save opening hours to database
         update_option('collection_time_booking_opening_hours', $opening_hours);
-        
-        echo '<div class="notice notice-success"><p>Settings saved successfully.</p></div>';
+
+        echo '<div class="notice notice-success"><p>' . esc_html('Settings saved successfully.', 'collection-time-booking') . '</p></div>';
     }
 
-    // Retrieve opening hours from database
+    // Retrieve opening hours from the database
     $opening_hours = get_option('collection_time_booking_opening_hours', array());
 
     ?>
     <div class="wrap">
-        <h1>Collection Time Settings</h1>
+        <h1><?php esc_html_e('Collection Time Settings', 'collection-time-booking'); ?></h1>
 
         <form method="post" action="">
             <?php wp_nonce_field('collection_time_booking_settings', 'collection_time_booking_nonce'); ?>
@@ -200,10 +174,10 @@ function display_collection_time_settings()
                     $end_time = isset($opening_hours[$day]['end_time']) ? esc_attr($opening_hours[$day]['end_time']) : '';
                     ?>
                     <tr>
-                        <th scope="row"><?php echo ucfirst($day); ?></th>
+                        <th scope="row"><?php echo esc_html(ucfirst($day)); ?></th>
                         <td>
-                            <input type="text" name="<?php echo $day; ?>_start_time" value="<?php echo $start_time; ?>" placeholder="Opening Time">
-                            <input type="text" name="<?php echo $day; ?>_end_time" value="<?php echo $end_time; ?>" placeholder="Closing Time">
+                            <input type="text" name="<?php echo esc_attr($day); ?>_start_time" value="<?php echo esc_attr($start_time); ?>" placeholder="<?php esc_attr_e('Opening Time', 'collection-time-booking'); ?>">
+                            <input type="text" name="<?php echo esc_attr($day); ?>_end_time" value="<?php echo esc_attr($end_time); ?>" placeholder="<?php esc_attr_e('Closing Time', 'collection-time-booking'); ?>">
                         </td>
                     </tr>
                     <?php
@@ -212,61 +186,13 @@ function display_collection_time_settings()
             </table>
 
             <p class="submit">
-                <input type="submit" name="collection_time_booking_submit" class="button-primary" value="Save Changes">
+                <input type="submit" name="collection_time_booking_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'collection-time-booking'); ?>">
             </p>
         </form>
     </div>
     <?php
 }
 
-//Add shipping method selection page on dashboard
-
-function display_shipping_methods_settings() {
-    // Save settings if form submitted
-    if (isset($_POST['shipping_methods_settings_submit'])) {
-        $selected_shipping_methods = isset($_POST['shipping_methods']) ? $_POST['shipping_methods'] : array();
-        $selected_shipping_methods = array_map('sanitize_text_field', $selected_shipping_methods);
-
-        // Save selected shipping methods to database
-        update_option('click_collect_shipping_methods', $selected_shipping_methods);
-        
-        echo '<div class="notice notice-success"><p>Settings saved successfully.</p></div>';
-    }
-
-    // Retrieve selected shipping methods from database
-    $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
-
-    // Retrieve all available shipping methods
-    $shipping_methods = WC()->shipping()->get_shipping_methods();
-
-    ?>
-    <div class="wrap">
-        <h1>Shipping Methods Settings</h1>
-
-        <form method="post" action="">
-            <?php wp_nonce_field('shipping_methods_settings', 'shipping_methods_settings_nonce'); ?>
-
-            <table class="form-table">
-                <tr>
-                    <th scope="row">Select Shipping Methods:</th>
-                    <td>
-                        <?php foreach ($shipping_methods as $id => $shipping_method) : ?>
-                            <label>
-                                <input type="checkbox" name="shipping_methods[]" value="<?php echo esc_attr($id); ?>" <?php checked(in_array($id, $selected_shipping_methods)); ?>>
-                                <?php echo esc_html($shipping_method->method_title); ?>
-                            </label><br>
-                        <?php endforeach; ?>
-                    </td>
-                </tr>
-            </table>
-
-            <p class="submit">
-                <input type="submit" name="shipping_methods_settings_submit" class="button-primary" value="Save Changes">
-            </p>
-        </form>
-    </div>
-    <?php
-}
 
 
 // Add custom meta box to checkout page
@@ -290,14 +216,7 @@ function collection_time_booking_add_meta_box($checkout)
     $selected_date = '';
     $selected_time = '';
 
-    $time_slots[''] = "Select Collection Time";//anuj
-    // Generate time slots based on the opening hours
-    
-    //anuj
-    // for ($time = $start_time; $time < $end_time; $time += $minimum_interval) {
-    //     $time_slots[date('H:i', $time)] = date('h:i A', $time);
-    // }
-    //anuj
+    $time_slots[''] = "Select Collection Time";
 
     echo '<div id="collection-time-box">';
     woocommerce_form_field(
@@ -340,15 +259,12 @@ add_action('woocommerce_checkout_process', 'collection_time_booking_validate_col
 function collection_time_booking_validate_collection_datetime()
 {
 
-    $current_shipping_method = WC()->session->get('chosen_shipping_methods')[0];
-
-    $current_shipping=array();
-    if($current_shipping_method!=''){
-        $current_shipping=explode(":",$current_shipping_method);
-    }
-    $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
-
-    if(in_array($current_shipping[0],$selected_shipping_methods)){
+     // Get the chosen shipping method
+     $chosen_shipping_methods = WC()->session->get('chosen_shipping_methods');
+     $current_shipping_method = !empty($chosen_shipping_methods) ? $chosen_shipping_methods[0] : '';
+ 
+     // Proceed only if the selected shipping method is 'local_pickup'
+     if ($current_shipping_method === 'local_pickup') {
 
         if (isset($_POST['collection_date']) && empty($_POST['collection_date'])) {
             wc_add_notice(__('Please select a collection date.'), 'error');
@@ -413,7 +329,6 @@ function collection_time_booking_display_admin_order_meta($order)
 {
     $collection_date = $order->get_meta('Collection Date');
     $collection_time = $order->get_meta('Collection Time');
-    $collection_datetime = $order->get_meta('Collection DateTime');
     
     if (!empty($collection_date)) {
         echo '<p><strong>Collection Date:</strong> ' . esc_html($collection_date) . '</p>';
@@ -423,9 +338,6 @@ function collection_time_booking_display_admin_order_meta($order)
         echo '<p><strong>Collection Time:</strong> ' . esc_html($collection_time) . '</p>';
     }
 
-    if (!empty($collection_datetime)) {
-        echo '<p><strong>Collection DateTime:</strong> ' . esc_html(date('l jS F H:i', $collection_datetime)) . '</p>';
-    }
 }
 
 // Attach collection date and time to the order confirmation email sent to the admin
@@ -436,10 +348,8 @@ function collection_time_booking_add_collection_datetime_to_email($order, $sent_
     if ($sent_to_admin && $order->get_meta('Collection Date') && $order->get_meta('Collection Time')) {
         $collection_date = $order->get_meta('Collection Date');
         $collection_time = $order->get_meta('Collection Time');
-        $collection_datetime = date('Y-m-d H:i', $order->get_meta('Collection DateTime'));
         echo '<p><strong>Collection Date:</strong> ' . esc_html($collection_date) . '</p>';
         echo '<p><strong>Collection Time:</strong> ' . esc_html($collection_time) . '</p>';
-        echo '<p><strong>Collection DateTime:</strong> ' . esc_html($collection_datetime) . '</p>';
     }
 }
 
