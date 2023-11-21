@@ -364,7 +364,8 @@ add_action('woocommerce_before_order_notes', 'collection_time_booking_add_meta_b
 
 function collection_time_booking_add_meta_box($checkout)
 {
-    $opening_hours = get_option('collection_time_booking_opening_hours', array());
+    
+		$opening_hours = get_option('collection_time_booking_opening_hours', array());
     
     // Get current time
     $current_time = strtotime('now');
@@ -416,7 +417,7 @@ function collection_time_booking_add_meta_box($checkout)
 
     // Set the session variables
     WC()->session->set('selected_collection_date', $selected_date);
-    WC()->session->set('selected_collection_time', $selected_time);
+    WC()->session->set('selected_collection_time', $selected_time); 
 }
 // Validate collection date and time before placing the order
 add_action('woocommerce_checkout_process', 'collection_time_booking_validate_collection_datetime');
@@ -635,6 +636,10 @@ function enqueue_my_script() {
     // Prepare and localize script
     wp_localize_script('collection-time-booking-script', 'my_script_vars', array(
         'selected_shipping_methods' => implode(" , ", $selected_shipping_methods),
+    ));
+	  wp_enqueue_script('my-shipping-methods-script', plugin_dir_url(__FILE__) . 'js/shipping-methods.js', array('jquery', 'collection-time-booking-script'), '1.1.1', true);
+    wp_localize_script('collection-time-booking-script', 'my_script_vars', array(
+        'selected_shipping_methods' => implode(" , ",$selected_shipping_methods),
     ));
 
     $collection_time_options = array(
