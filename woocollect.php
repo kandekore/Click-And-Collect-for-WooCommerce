@@ -74,10 +74,42 @@ function add_custom_admin_menu() {
         'shipping-methods-settings', 
         'display_shipping_methods_settings'
     );
+	
 }
+function my_plugin_admin_init() {
+    add_settings_section(
+        'my_plugin_settings_section', // ID
+        'General Settings', // Title
+        'my_plugin_settings_section_callback', // Callback
+        'woo-click-collect' // Page
+    );
+
+    add_settings_field(
+        'my_plugin_delete_data_on_deactivation', // ID
+        'Delete Data on Deactivation', // Title
+        'my_plugin_delete_data_on_deactivation_callback', // Callback
+        'woo-click-collect', // Page
+        'my_plugin_settings_section' // Section
+    );
+
+    register_setting('woo-click-collect', 'my_plugin_delete_data_on_deactivation');
+}
+
+function my_plugin_settings_section_callback() {
+    echo '<p>General settings for the plugin.</p>';
+}
+
+add_action('admin_init', 'my_plugin_admin_init');
 
 // Main menu page content
 function display_main_menu_content() {
+	 echo '<form method="post" action="options.php">';
+    settings_fields('woo-click-collect');
+    do_settings_sections('woo-click-collect');
+    submit_button();
+    echo '</form>';
+
+
     // Display content for the main menu page here
     echo '<div class="wrap">';
     echo '<h1>Pro Click & Collect for WooCommerce</h1>';
@@ -120,9 +152,29 @@ function display_main_menu_content() {
     echo '</ul>';
     
     echo '<p>By following these instructions, you will be able to configure the plugin\'s settings for the Booking Window, Collection Time, and Shipping Methods. These settings will customize the functionality of the click and collect feature according to your business requirements.</p>';
+	
+	
     
 }
 
+function my_plugin_delete_data_on_deactivation_callback() {
+    $option = get_option('my_plugin_delete_data_on_deactivation');
+    echo '<input type="checkbox" id="my_plugin_delete_data_on_deactivation" name="my_plugin_delete_data_on_deactivation" value="1" ' . checked(1, $option, false) . '/>';
+    echo '<label for="my_plugin_delete_data_on_deactivation">Check this box if you want all plugin data to be deleted upon plugin deactivation.</label>';
+}
+function my_plugin_deactivate() {
+    // Check if the user has opted to delete data on deactivation
+    if (get_option('my_plugin_delete_data_on_deactivation') == '1') {
+        // Delete options
+        delete_option('booking_window_hours');
+        delete_option('collection_time_booking_opening_hours');
+        delete_option('click_collect_shipping_methods');
+        
+        // Add code to delete additional data (e.g., custom tables) here
+    }
+}
+
+register_deactivation_hook(__FILE__, 'my_plugin_deactivate');
 // Booking Window admin settings page
 function display_booking_window() {
     // check user capabilities
