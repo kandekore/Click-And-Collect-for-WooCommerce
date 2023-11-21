@@ -205,9 +205,9 @@ function display_collection_time_settings()
                     $end_time = isset($opening_hours[$day]['end_time']) ? esc_attr($opening_hours[$day]['end_time']) : '';
                     ?>
                     <tr>
-                        <th scope="row"><?php echo ucfirst($day); ?></th>
+                    <th scope="row"><?php echo esc_html(ucfirst($day)); ?></th>
                         <td>
-                            <input type="text" name="<?php echo $day; ?>_start_time" value="<?php echo $start_time; ?>" placeholder="Opening Time">
+                            <input type="text" name="<?php echo esc_attr($day); ?>_start_time" value="<?php echo esc_attr($start_time); ?>" placeholder="Opening Time">                            
                             <input type="text" name="<?php echo $day; ?>_end_time" value="<?php echo $end_time; ?>" placeholder="Closing Time">
                         </td>
                     </tr>
@@ -533,6 +533,39 @@ function display_future_collection_orders() {
     }
 }
 
+add_action('admin_init', 'register_booking_window_settings');
+
+function register_booking_window_settings() {
+    register_setting('booking_window_settings', 'booking_window_hours');
+}
+
+function register_collection_time_settings() {
+    register_setting('collection_time_settings', 'booking_window_hours');
+    register_setting('collection_time_booking_settings', 'collection_time_booking_opening_hours');
+}
+add_action('admin_init', 'register_collection_time_settings');
+
+
+function remove_field_validation_on_shipping_change( $posted_data ) {
+
+    $current_shipping_method = isset( $posted_data['shipping_method'][0] ) ? $posted_data['shipping_method'][0] : '';
+
+    $current_shipping=array();
+    if($current_shipping_method!=''){
+        $current_shipping=explode(":",$current_shipping_method);
+    }
+    $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
+
+    if(!in_array($current_shipping[0],$selected_shipping_methods)){
+
+        unset( $_POST['collection_date'] );
+        unset( $_POST['collection_time'] );
+    }
+    
+    return $posted_data;
+}
+add_filter( 'woocommerce_checkout_posted_data', 'remove_field_validation_on_shipping_change',10,2);
+
 
 function enqueue_my_script() {
     $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
@@ -569,37 +602,3 @@ function enqueue_my_script() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_my_script');
 
-
-
-add_action('admin_init', 'register_booking_window_settings');
-
-function register_booking_window_settings() {
-    register_setting('booking_window_settings', 'booking_window_hours');
-}
-
-function register_collection_time_settings() {
-    register_setting('collection_time_settings', 'booking_window_hours');
-    register_setting('collection_time_booking_settings', 'collection_time_booking_opening_hours');
-}
-add_action('admin_init', 'register_collection_time_settings');
-
-
-function remove_field_validation_on_shipping_change( $posted_data ) {
-
-    $current_shipping_method = isset( $posted_data['shipping_method'][0] ) ? $posted_data['shipping_method'][0] : '';
-
-    $current_shipping=array();
-    if($current_shipping_method!=''){
-        $current_shipping=explode(":",$current_shipping_method);
-    }
-    $selected_shipping_methods = get_option('click_collect_shipping_methods', array());
-
-    if(!in_array($current_shipping[0],$selected_shipping_methods)){
-
-        unset( $_POST['collection_date'] );
-        unset( $_POST['collection_time'] );
-    }
-    
-    return $posted_data;
-}
-add_filter( 'woocommerce_checkout_posted_data', 'remove_field_validation_on_shipping_change',10,2);
