@@ -2,7 +2,7 @@
 /*
 Plugin Name: Click & Collect for WooCommerce
 Description: Collection time plugin for WooCommerce orders
-Version: 1.1.1
+Version: 1.0.2
 Author: D Kandekore
 License: GPL v2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -264,7 +264,37 @@ function display_shipping_methods_settings() {
                 <input type="submit" name="shipping_methods_settings_submit" class="button-primary" value="Save Changes">
             </p>
         </form>
+		
+		<div class="woo-settings-instructions">
+    <h2>Instructions for Adding a Shipping Zone and Method in WooCommerce</h2>
+    <p>Follow these steps to add a new shipping zone and method:</p>
+    <ol>
+        <li>Navigate to your WordPress Dashboard.</li>
+        <li>Go to <strong>WooCommerce</strong> and click on <strong>Settings</strong>.</li>
+        <li>Open the <strong>Shipping</strong> tab.</li>
+        <li>Click on the <strong>Add Shipping Zone</strong> button.</li>
+        <li>Enter a <strong>Zone Name</strong> and select <strong>Zone Regions</strong> that apply.</li>
+        <li>Click on <strong>Add Shipping Method</strong> button within the zone.</li>
+        <li>Choose the desired shipping method (e.g., Flat Rate, Free Shipping, Local Pickup) from the dropdown and click <strong>Add Shipping Method</strong>.</li>
+        <li>Once added, click on the shipping method to configure its settings (like cost, tax status, etc.).</li>
+        <li>After configuring the settings, click <strong>Save Changes</strong>.</li>
+    </ol>
+    <p>Note: You can create multiple shipping zones and assign different shipping methods to each zone based on your requirements.</p>
+</div>
+
     </div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('input[name="shipping_methods[]"]');
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.value === 'pickup_location') {
+                checkbox.style.display = 'none'; // Hide the checkbox
+                checkbox.parentNode.style.display = 'none'; // Optionally hide the parent element, if needed
+            }
+        });
+    });
+</script>
     <?php
 }
 
