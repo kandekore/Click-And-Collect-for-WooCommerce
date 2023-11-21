@@ -132,6 +132,9 @@ function display_booking_window() {
     
     // Update 'booking_window_hours' if form submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Verify nonce
+        check_admin_referer('booking_window_settings_action', 'booking_window_settings_nonce');
+
         update_option('booking_window_hours', $_POST['booking_window_hours']);
     }
 
@@ -139,10 +142,9 @@ function display_booking_window() {
     ?>
     <div class="wrap">
         <h1><?= esc_html(get_admin_page_title()); ?></h1>
-        <form action="options.php" method="post">
+        <form action="" method="post">
             <?php
-            settings_fields('booking_window_settings');
-            do_settings_sections('booking_window_settings');
+            wp_nonce_field('booking_window_settings_action', 'booking_window_settings_nonce');
             ?>
             <table class="form-table" role="presentation">
                 <tbody>
@@ -151,7 +153,7 @@ function display_booking_window() {
                     <td><input name="booking_window_hours" type="number" id="minimum_hours" value="<?= $booking_window_hours ?>" class="regular-text"></td>
                 </tr>
                 </tbody>
-            </table>
+                </table>
             <?php
             submit_button('Save Changes');
             ?>
@@ -166,6 +168,9 @@ function display_collection_time_settings()
 {
     // Save settings if form submitted
     if (isset($_POST['collection_time_booking_submit'])) {
+         // Verify nonce
+    check_admin_referer('collection_time_booking_settings', 'collection_time_booking_nonce');
+
         $opening_hours = array();
         
         // Loop through days of the week
@@ -224,6 +229,9 @@ function display_collection_time_settings()
 function display_shipping_methods_settings() {
     // Save settings if form submitted
     if (isset($_POST['shipping_methods_settings_submit'])) {
+        // Verify nonce
+    check_admin_referer('shipping_methods_settings', 'shipping_methods_settings_nonce');
+
         $selected_shipping_methods = isset($_POST['shipping_methods']) ? $_POST['shipping_methods'] : array();
         $selected_shipping_methods = array_map('sanitize_text_field', $selected_shipping_methods);
 
@@ -320,16 +328,10 @@ function collection_time_booking_add_meta_box($checkout)
     $selected_date = '';
     $selected_time = '';
 
-    $time_slots[''] = "Select Collection Time";//anuj
+    $time_slots[''] = "Select Collection Time";
     // Generate time slots based on the opening hours
     
-    //anuj
-    // for ($time = $start_time; $time < $end_time; $time += $minimum_interval) {
-    //     $time_slots[date('H:i', $time)] = date('h:i A', $time);
-    // }
-    //anuj
-
-    echo '<div id="collection-time-box">';
+     echo '<div id="collection-time-box">';
     woocommerce_form_field(
         'collection_date',
         array(
