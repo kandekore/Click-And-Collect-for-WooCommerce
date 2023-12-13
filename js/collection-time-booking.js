@@ -1,15 +1,29 @@
 jQuery(document).ready(function($) {
-  // Initialize datepicker
+    // Initialize datepicker
+    $("#collection_time_field").hide();
 
-  $("#collection_time_field").hide();
+    console.log(collectionTimeOptions);
 
-  $('#collection_date').datepicker({
-    dateFormat: 'yy-mm-dd',
-    minDate: collectionTimeOptions.minDate,
-    beforeShowDay: function(date) {      
-      return [true];
-    },
-    onSelect: function(selectedDate) {      
+    $('#collection_date').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: collectionTimeOptions.minDate,
+        beforeShowDay: function(date) {
+    if (!collectionTimeOptions.unavailableDates) {
+        return [true]; // If unavailableDates is undefined, don't disable any dates
+    }
+            // Disable unavailable dates
+            for (var i = 0; i < collectionTimeOptions.unavailableDates.length; i++) {
+                var range = collectionTimeOptions.unavailableDates[i];
+                var fromDate = new Date(range.from);
+                var toDate = new Date(range.to);
+                
+                if (date >= fromDate && date <= toDate) {
+                    return [false]; // Disable these dates
+                }
+            }
+            return [true]; // Enable other dates
+        },
+        onSelect: function(selectedDate) {   
 
       var daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
