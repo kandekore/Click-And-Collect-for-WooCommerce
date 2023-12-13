@@ -2,7 +2,7 @@
 /*
 Plugin Name: Click & Collect for WooCommerce
 Description: Collection time plugin for WooCommerce orders
-Version: 1.0.2
+Version: 1.0.3
 Author: D Kandekore
 License: GPL v2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -74,7 +74,14 @@ function add_custom_admin_menu() {
         'shipping-methods-settings', 
         'display_shipping_methods_settings'
     );
-	
+	add_submenu_page(
+    'woo-click-collect', 
+    'Unavailable Dates', 
+    'Unavailable Dates', 
+    'manage_options', 
+    'unavailable-dates-settings', 
+    'display_unavailable_dates_settings'
+);
 }
 function my_plugin_admin_init() {
     add_settings_section(
@@ -170,7 +177,6 @@ function my_plugin_deactivate() {
         delete_option('collection_time_booking_opening_hours');
         delete_option('click_collect_shipping_methods');
         
-        // Add code to delete additional data (e.g., custom tables) here
     }
 }
 
@@ -357,68 +363,136 @@ function display_shipping_methods_settings() {
 </script>
     <?php
 }
+function display_unavailable_dates_settings() {
+    // Check user capabilities
+    if (!current_user_can('manage_options')) {
+        return;
+    }
 
+
+    wp_enqueue_script('jquery-ui-core');
+    wp_enqueue_script('jquery-ui-datepicker');
+    wp_enqueue_style('jquery-ui-datepicker-css', plugins_url('assets/jquery-ui.css', __FILE__));
+    wp_enqueue_script('custom-admin-script', plugin_dir_url(__FILE__) . 'js/admindp.js', array('jquery-ui-datepicker'), '1.0.0', true);
+
+
+    // Handle form submission logic for adding new dates
+    if (isset($_POST['unavailable_dates_submit'])) {
+        check_admin_referer('unavailable_dates_action', 'unavailable_dates_nonce');
+
+        $new_unavailable_dates = array(
+            'from' => sanitize_text_field($_POST['from_date']),
+            'to' => sanitize_text_field($_POST['to_date'])
+        );
+
+        // Retrieve existing unavailable dates and add new ones
+        $unavailable_dates = get_option('unavailable_dates', array());
+        $unavailable_dates[] = $new_unavailable_dates;
+        update_option('unavailable_dates', $unavailable_dates);
+
+        echo '<div class="notice notice-success"><p>New unavailable date range added.</p></div>';
+    }
+
+    // Handle deletion of unavailable date range
+    if (isset($_POST['delete_unavailable_date'])) {
+        check_admin_referer('delete_unavailable_date_action', 'delete_unavailable_date_nonce');
+
+        $index_to_delete = sanitize_text_field($_POST['delete_unavailable_date']);
+        $unavailable_dates = get_option('unavailable_dates', array());
+
+        if (isset($unavailable_dates[$index_to_delete])) {
+            unset($unavailable_dates[$index_to_delete]);
+            $unavailable_dates = array_values($unavailable_dates); // Reindex the array
+            update_option('unavailable_dates', $unavailable_dates);
+            echo '<div class="notice notice-success"><p>Unavailable date range deleted.</p></div>';
+        }
+    }
+
+    // Retrieve existing unavailable dates from the database for displaying
+    $unavailable_dates = get_option('unavailable_dates', array());
+
+    // Render the form
+    ?>
+    <div class="wrap">
+        <h1>Unavailable Dates Settings</h1>
+        <form method="post" action="">
+            <?php wp_nonce_field('unavailable_dates_action', 'unavailable_dates_nonce'); ?>
+
+            <p>
+                <label for="from_date">From Date:</label>
+                <input type="text" id="from_date" name="from_date" class="date-picker" required>
+            </p>
+            <p>
+                <label for="to_date">To Date:</label>
+                <input type="text" id="to_date" name="to_date" class="date-picker" required>
+            </p>
+
+            <p>
+                <input type="submit" name="unavailable_dates_submit" class="button-primary" value="Add Unavailable Date Range">
+            </p>
+        </form>
+
+        <?php
+        if (!empty($unavailable_dates)) {
+            echo '<h2>Existing Unavailable Dates</h2>';
+            echo '<ul>';
+            foreach ($unavailable_dates as $index => $range) {
+                echo '<li>';
+                echo 'From: ' . esc_html($range['from']) . ' To: ' . esc_html($range['to']);
+                ?>
+                <form method="post" action="">
+                    <?php wp_nonce_field('delete_unavailable_date_action', 'delete_unavailable_date_nonce'); ?>
+                    <input type="hidden" name="delete_unavailable_date" value="<?php echo esc_attr($index); ?>">
+                    <input type="submit" value="Delete" class="button-link-delete">
+                </form>
+                <?php
+                echo '</li>';
+            }
+            echo '</ul>';
+        }
+        ?>
+
+    </div>
+
+
+    <?php
+}
 
 // Add custom meta box to checkout page
 add_action('woocommerce_before_order_notes', 'collection_time_booking_add_meta_box');
 
-function collection_time_booking_add_meta_box($checkout)
-{
+function collection_time_booking_add_meta_box($checkout) {
+    $opening_hours = get_option('collection_time_booking_opening_hours', array());
     
-		$opening_hours = get_option('collection_time_booking_opening_hours', array());
-    
-    // Get current time
-    $current_time = strtotime('now');
-    
-    // Minimum time slot interval in seconds (1 hour)
-    $minimum_interval = 1 * 60 * 60;
+    // Initialize variables for selected date and time if needed
+    $selected_date = WC()->session->get('selected_collection_date', '');
+    $selected_time = WC()->session->get('selected_collection_time', '');
 
-    // Get available time slots for today
-    $today = strtolower(date('l'));
-    $start_time = strtotime($opening_hours[$today]['start_time']);
-    $end_time = strtotime($opening_hours[$today]['end_time']);
-    $time_slots = array();
-    $selected_date = '';
-    $selected_time = '';
-
-    $time_slots[''] = "Select Collection Time";
-    // Generate time slots based on the opening hours
+    // Output the HTML for the date and time fields
+    echo '<div id="collection-time-box">';
     
-     echo '<div id="collection-time-box">';
-    woocommerce_form_field(
-        'collection_date',
-        array(
-            'type' => 'text',
-            'class' => array('form-row-wide'),
-            'label' => __('Collection Date'),
-            'placeholder' => __('Select date'),
-            'required' => true,
-            'autocomplete' => 'off',
-            'custom_attributes' => array(
-                'autocomplete' => 'off',
-                'readonly' => 'readonly'
-            )
-        ),
-        $selected_date
-    );
+    // Date field
+    woocommerce_form_field('collection_date', array(
+        'type'          => 'text',
+        'class'         => array('form-row-wide'),
+        'label'         => __('Collection Date'),
+        'placeholder'   => __('Select date'),
+        'required'      => true,
+        'custom_attributes' => array('autocomplete' => 'off', 'readonly' => 'readonly')
+    ), $selected_date);
 
-    woocommerce_form_field(
-        'collection_time',
-        array(
-            'type' => 'select',
-            'class' => array('form-row-wide'),            
-            'label' => __('Collection Time'),
-            'options' => $time_slots,
-            'required' => true,
-        ),
-        $selected_time
-    );
+    // Time field - initially hidden, shown by JS when a date is selected
+    woocommerce_form_field('collection_time', array(
+        'type'          => 'select',
+        'class'         => array('form-row-wide'),
+        'label'         => __('Collection Time'),
+        'options'       => array('' => __('Select time')), // Initially empty, populated by JS
+        'required'      => true,
+    ), $selected_time);
+
     echo '</div>';
-
-    // Set the session variables
-    WC()->session->set('selected_collection_date', $selected_date);
-    WC()->session->set('selected_collection_time', $selected_time); 
 }
+
 // Validate collection date and time before placing the order
 add_action('woocommerce_checkout_process', 'collection_time_booking_validate_collection_datetime');
 
@@ -630,7 +704,7 @@ function enqueue_my_script() {
     wp_enqueue_style('jquery-ui-datepicker-css', plugins_url('assets/jquery-ui.css', __FILE__));
     wp_enqueue_script('jquery-ui-timepicker-addon', plugins_url('assets/jquery-ui-timepicker-addon.min.js', __FILE__), array('jquery-ui-datepicker'), '1.6.3', true);
     wp_enqueue_style('jquery-ui-timepicker-css', plugins_url('assets/jquery-ui-timepicker-addon.min.css', __FILE__));
-    wp_enqueue_script('collection-time-booking-script', plugin_dir_url(__FILE__) . 'js/collection-time-booking.js', array('jquery-ui-datepicker', 'jquery-ui-timepicker-addon'), '1.19', true);
+    wp_enqueue_script('collection-time-booking-script', plugin_dir_url(__FILE__) . 'js/collection-time-booking.js', array('jquery-ui-datepicker', 'jquery-ui-timepicker-addon'), '1.19.1', true);
     wp_enqueue_style('plugin-styles', plugin_dir_url(__FILE__) . 'plugin-styles.css');
 
     // Prepare and localize script
@@ -655,7 +729,21 @@ function enqueue_my_script() {
         $collection_time_options['openingHours'] = $opening_hours;
     }
 
+    $collection_time_options['unavailableDates'] = get_option('unavailable_dates');
+
     wp_localize_script('collection-time-booking-script', 'collectionTimeOptions', $collection_time_options);
 }
 add_action('wp_enqueue_scripts', 'enqueue_my_script');
+function enqueue_admin_scripts($hook) {
+    if ('admin.php?page=unavailable-dates-settings' !== $hook) {
+        return;
+    }
 
+    wp_enqueue_script('jquery-ui-core');
+    wp_enqueue_script('jquery-ui-datepicker', '', array('jquery-ui-core'), '1.12.1', true);
+    wp_enqueue_style('jquery-ui-datepicker-css', plugins_url('assets/jquery-ui.css', __FILE__));
+
+    // Enqueue your custom admin script
+    wp_enqueue_script('custom-admin-script', plugin_dir_url(__FILE__) . 'js/admindp.js', array('jquery-ui-datepicker'), '1.0.0', true);
+}
+add_action('admin_enqueue_scripts', 'enqueue_admin_scripts');
