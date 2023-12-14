@@ -592,7 +592,7 @@ add_action('woocommerce_email_order_details', 'collection_time_booking_add_colle
 
 function collection_time_booking_add_collection_datetime_to_email($order, $sent_to_admin, $plain_text, $email)
 {
-    if ($sent_to_admin && $order->get_meta('Collection Date') && $order->get_meta('Collection Time')) {
+    if ($order->get_meta('Collection Date') && $order->get_meta('Collection Time')) {
         $collection_date = $order->get_meta('Collection Date');
         $collection_time = $order->get_meta('Collection Time');
         $collection_datetime = date('Y-m-d H:i', $order->get_meta('Collection DateTime'));
@@ -692,6 +692,28 @@ function remove_field_validation_on_shipping_change( $posted_data ) {
     return $posted_data;
 }
 add_filter( 'woocommerce_checkout_posted_data', 'remove_field_validation_on_shipping_change',10,2);
+
+add_action('woocommerce_thankyou', 'display_collection_time_on_order_confirmation', 10, 1);
+
+function display_collection_time_on_order_confirmation($order_id) {
+    // Get the order object
+    $order = wc_get_order($order_id);
+
+    $collection_date = $order->get_meta('Collection Date');
+    $collection_time = $order->get_meta('Collection Time');
+
+    echo '<div class="order-collection-details">';
+    
+    if (!empty($collection_date)) {
+        echo '<p><strong>Collection Date:</strong> ' . esc_html($collection_date) . '</p>';
+    }
+
+    if (!empty($collection_time)) {
+        echo '<p><strong>Collection Time:</strong> ' . esc_html($collection_time) . '</p>';
+    }
+
+    echo '</div>';
+}
 
 
 function enqueue_my_script() {
