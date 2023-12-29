@@ -11,6 +11,7 @@ The **Click and Collect for WooCommerce** plugin is an enhanced version of the [
   - [Booking Window](#booking-window)
   - [Collection Time Settings](#collection-time-settings)
   - [Shipping Methods Settings](#shipping-methods-settings)
+  - [Unavailable Dates Settings](#unavailable-dates-settings)
 - [Complementary Plugin: Simple Click & Collect Branches](#complementary-plugin-simple-click--collect-branches)
 - [Usage](#usage)
   - [Selecting Collection Date and Time](#selecting-collection-date-and-time)
@@ -55,11 +56,15 @@ Admins can define the opening and closing times for collection on each day of th
 
 ### Shipping Methods Settings
 
-The Click and Collect plugin allows you to select specific shipping methods that support click and collect. You can customize the available shipping methods to provide a seamless click and collect experience.
+The Click and Collect plugin allows you to select specific shipping methods that support click and collect. You can customize the available shipping methods to provide a seamless click-and-collect experience.
+
+### Unavailable Dates Settings
+
+The Click and Collect plugin now includes an option to define unavailable dates for collection. This feature allows admins to specify dates when collections are not available, ensuring that customers cannot select these dates during the checkout process.
 
 ## Complementary Plugin: Simple Click & Collect Branches
 
-The Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"]https://github.com/[branches-repository-link](https://github.com/kandekore/Simple-Click-and-Collect-Branches-for-WooCommerce) plugin. When used together, these plugins provide an all-in-one solution for managing click and collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
+The Click and Collect for WooCommerce plugin can be complemented by the ["Simple Click & Collect Branches"]https://github.com/[branches-repository-link](https://github.com/kandekore/Simple-Click-and-Collect-Branches-for-WooCommerce) plugin. When used together, these plugins provide an all-in-one solution for managing click-and-collect orders, including collection time selection and pickup location management. Make sure to install and activate both plugins to take advantage of their combined functionality.
 
 ## Usage
 
