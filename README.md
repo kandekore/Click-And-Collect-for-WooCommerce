@@ -12,6 +12,7 @@ The **Click and Collect for WooCommerce** plugin is an enhanced version of the [
   - [Collection Time Settings](#collection-time-settings)
   - [Shipping Methods Settings](#shipping-methods-settings)
   - [Unavailable Dates Settings](#unavailable-dates-settings)
+- [Screenshots](#Screenshots)
 - [Complementary Plugin: Simple Click & Collect Branches](#complementary-plugin-simple-click--collect-branches)
 - [Usage](#usage)
   - [Selecting Collection Date and Time](#selecting-collection-date-and-time)
@@ -61,6 +62,15 @@ The Click and Collect plugin allows you to select specific shipping methods that
 ### Unavailable Dates Settings
 
 The Click and Collect plugin now includes an option to define unavailable dates for collection. This feature allows admins to specify dates when collections are not available, ensuring that customers cannot select these dates during the checkout process.
+
+## Screenshots
+
+## Screenshot
+
+![Project Screenshot1](https://darrenk.uk/wp-content/uploads/2023/12/Snag_78681f9.png)
+
+
+![Project Screenshot2](https://darrenk.uk/wp-content/uploads/2024/01/clacl.jpg)
 
 ## Complementary Plugin: Simple Click & Collect Branches
 
