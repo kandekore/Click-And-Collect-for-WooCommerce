@@ -65,8 +65,6 @@ The Click and Collect plugin now includes an option to define unavailable dates 
 
 ## Screenshots
 
-## Screenshot
-
 ![Project Screenshot1](https://darrenk.uk/wp-content/uploads/2023/12/Snag_78681f9.png)
 
 
